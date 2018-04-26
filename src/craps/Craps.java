@@ -29,7 +29,7 @@ public class Craps {
     int bet = 5;
     int oddsBet = 5;
     int wins = 0;
-    int trials = 10;
+    int trials = 1000;
     // uniform random integer in [0, n) 
     public static int uniform(int n) {
         return (int) (Math.random() * n);
@@ -58,16 +58,19 @@ public class Craps {
     
     public int loseBet() {
         bank = bank - bet;
+        System.out.println("Lost pass bet, Bank is now: " + bank);
         return bank;
     }
     
      public int loseOddsBet() {
         bank = bank - (bet + oddsBet);
+        System.out.println("Lost Odds bet, Bank is now: " + bank);
         return bank;
     }
     
   public int pointOnFour(int x) {
         int y = sumOfTwoDice();
+        System.out.println("Roll is " + y);
         if (y == 7) return loseOddsBet();
         if (y == x) return twoOneOdds();
         else return pointOnFour(x);
@@ -77,35 +80,37 @@ public class Craps {
     public int twoOneOdds() {
         wins++;
         bank = bank + bet + (oddsBet * 2);
-        System.out.println("Won Odds bet of " + (oddsBet * 2) + " Bank is now: " + bank);
+        System.out.println("Won Odds bet, Bank is now: " + bank);
         return bank;
     }
     
     public int pointOnFive(int x) {
         int y = sumOfTwoDice();
+        System.out.println("Roll is " + y);
         if (y == 7) return loseOddsBet();
         if (y == x) return threeTwoOdds();
-        else return pointOnFour(x);
+        else return pointOnFive(x);
     }
     
     public int threeTwoOdds() {
         wins++;
         bank = (int) (bank + bet + (oddsBet * 1.5));
-        System.out.println("Won Odds bet of " + (oddsBet * 1.5) + " Bank is now: " + bank);
+        System.out.println("Won Odds bet, Bank is now: " + bank);
         return bank;
     }
     
     public int pointOnSix(int x) {
         int y = sumOfTwoDice();
+        System.out.println("Roll is " + y);
         if (y == 7) return loseOddsBet();
         if (y == x) return threeTwoOdds();
-        else return pointOnFour(x);
+        else return pointOnSix(x);
     }
     
     public int fiveSix() {
         wins++;
         bank = (int) (bank + bet + (oddsBet * (5/6)));
-        System.out.println("Won Odds bet of " + (oddsBet * (5/6)) + " Bank is now: " + bank);
+        System.out.println("Won Odds, Bank is now: " + bank);
         return bank;
     }
    /***************************************************************************
@@ -120,16 +125,23 @@ public class Craps {
      * @return 
     ***************************************************************************/
     public int winsPassBet() {
+        System.out.println("------------------------------------");
         int x = sumOfTwoDice();
-        if (x == 7 || x == 11)           return winPassBet();
-        if (x == 2 || x == 3 || x == 12) return loseBet();
-        if (x == 4 || x == 10)           return pointOnFour(x);
-        if (x == 5 || x == 9)           return pointOnFive(x);
-        else          return pointOnSix(x);
+        System.out.println("Come out roll is " + x);
+        if (x == 7 || x == 11)
+            return winPassBet();
+        if (x == 2 || x == 3 || x == 12)
+            return loseBet();
+        System.out.println("Point is " + x);
+        if (x == 4 || x == 10)
+            return pointOnFour(x);
+        if (x == 5 || x == 9)
+            return pointOnFive(x);
+        else
+            return pointOnSix(x);
     }
     
-    
-    
+  
     
 //    public int gameTwo(int x){
 //        int y = sumOfTwoDice();
@@ -165,7 +177,7 @@ public class Craps {
         for (int t = 0; t < c.trials; t++)
             c.winsPassBet();
             
-        System.out.println("Wins = " + c.getWins() + "  Losses = " + (c.trials - c.getWins()) + "  Bank = " + c.getBank());
+        System.out.println("Wins = " + c.getWins() + "  Losses = " + (c.trials - c.getWins()) + "  Bank = " + c.getBank() + "  Win%: " + 100.0 * c.getWins() / c.trials);
         
 //        int trials = 1000000;     // number of pass bets to simulate
 //        int wins = 0;             // number of pass bets won
